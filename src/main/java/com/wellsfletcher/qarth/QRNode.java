@@ -22,9 +22,15 @@ import java.util.LinkedList;
 public class QRNode extends QRCode {
     // private int width = 250;
     // private int height = 250;
+    protected Style style;
 
     public QRNode(String text) {
+        this(text, new Style());
+    }
+
+    public QRNode(String text, Style style) {
         super(text);
+        setStyle(style);
     }
 
     /**
@@ -79,6 +85,12 @@ public class QRNode extends QRCode {
         }
 
         return result;
+    }
+
+    public void setStyle(Style style) {
+        this.style = style;
+        width = style.getWidth();
+        height = style.getHeight();
     }
 
     public int getWidth() {
