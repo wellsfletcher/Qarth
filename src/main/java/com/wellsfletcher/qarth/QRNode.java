@@ -3,6 +3,7 @@ package com.wellsfletcher.qarth;
 // QR code generation
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;
+import com.google.zxing.EncodeHintType;
 
 // general
 import java.io.*;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.LinkedList;
 
 /**
- * Holds information necessary to generate a single QRCode
+ * Represents a single QRCode.
  */
 public class QRNode extends QRCode {
     // private int width = 250;
@@ -46,9 +47,11 @@ public class QRNode extends QRCode {
     public void create(File file) {
         String path = file.getPath();
         // String extension = FileSystemUtils.getExtension(file);
+        addHints();
 
         ByteArrayOutputStream bout = this
             .withSize(width, height)
+            .withColor(style.getColor(), style.getBackgroundColor())
             .to(ImageType.PNG)
             .stream();
 
@@ -64,6 +67,18 @@ public class QRNode extends QRCode {
             e.printStackTrace();
         }
     }
+
+    private void addHints() {
+        hints.put(EncodeHintType.MARGIN, style.getMargin()); /* default = 4 */
+    }
+
+    /*
+    public QRNode withStyle(Style style) {
+        setStyle(style);
+        addHints();
+        return this;
+    }
+    */
 
     public static List<QRNode> from(final List<String> links) {
         List<QRNode> result = new LinkedList<>();
@@ -86,6 +101,12 @@ public class QRNode extends QRCode {
 
         return result;
     }
+
+    /*
+    public static void apply(final QRNode[][] codes, Style style) {
+
+    }
+    */
 
     public void setStyle(Style style) {
         this.style = style;
