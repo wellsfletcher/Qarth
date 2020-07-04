@@ -1,5 +1,8 @@
 package com.wellsfletcher.qarth;
 
+// custom packages
+import com.wellsfletcher.qarth.util.FileSystem;
+
 // QR code generation
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;
@@ -25,7 +28,7 @@ public final class Generator {
     private Generator() {}
 
     public static void simple(String link, String directory, String name) {
-        String path = FileSystemUtils.join(directory, name);
+        String path = FileSystem.join(directory, name);
         simple(link, path);
     }
 
@@ -39,7 +42,7 @@ public final class Generator {
     }
 
     public static void vertical(List<String> links, String directory, String name) {
-        String path = FileSystemUtils.join(directory, name);
+        String path = FileSystem.join(directory, name);
         vertical(links, path);
     }
 
@@ -57,9 +60,9 @@ public final class Generator {
         }
         grid(grid, file);
         /*
-        String directory = FileSystemUtils.includeTrailingSlash(file.getParent());
+        String directory = FileSystem.includeTrailingSlash(file.getParent());
         String name = file.getName();
-        String path = FileSystemUtils.join(directory, name);
+        String path = FileSystem.join(directory, name);
         int width = 250;
         int length = links.size();
 
@@ -68,7 +71,7 @@ public final class Generator {
         BufferedImage combined = new BufferedImage(width, totalHeight, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = combined.createGraphics();
         for (QRNode link : links) {
-            File tempImageFile = new File(FileSystemUtils.join(directory, "_temp.png"));
+            File tempImageFile = new File(FileSystem.join(directory, "_temp.png"));
             simple(link, tempImageFile);
 
             try {
@@ -93,7 +96,7 @@ public final class Generator {
     }
 
     public static void horizontal(List<String> links, String directory, String name) {
-        String path = FileSystemUtils.join(directory, name);
+        String path = FileSystem.join(directory, name);
         horizontal(links, path);
     }
 
@@ -113,7 +116,7 @@ public final class Generator {
     }
 
     public static void grid(String[][] links, String directory, String name) {
-        String path = FileSystemUtils.join(directory, name);
+        String path = FileSystem.join(directory, name);
         grid(links, path);
     }
 
@@ -129,10 +132,10 @@ public final class Generator {
      * @requires the given file to have a valid extension
      */
     public static void grid(QRNode[][] links, File file) {
-        String directory = FileSystemUtils.includeTrailingSlash(file.getParent());
+        String directory = FileSystem.includeTrailingSlash(file.getParent());
         String name = file.getName();
-        String extension = FileSystemUtils.getExtension(file);
-        String path = FileSystemUtils.join(directory, name);
+        String extension = FileSystem.getExtension(file);
+        String path = FileSystem.join(directory, name);
 
         int width = links[0][0].getWidth();
         int height = links[0][0].getHeight();
@@ -147,7 +150,7 @@ public final class Generator {
         Graphics2D g2d = combined.createGraphics();
         for (QRNode[] linkRow : links) {
             for (QRNode link : linkRow) {
-                String tempImagePath = FileSystemUtils.join(directory, "_temp" + "." + extension);
+                String tempImagePath = FileSystem.join(directory, "_temp" + "." + extension);
                 File tempImageFile = new File(tempImagePath);
                 simple(link, tempImageFile);
 
@@ -173,4 +176,16 @@ public final class Generator {
             e.printStackTrace();
         }
     }
+
+    public static void treeGrid(QRNode[][] links, File file) {
+
+    }
+
+    /*
+     * Inputs a list of links and a photo; outputs a mosaic of the photo composed of QR codes.
+     *
+    public static void mosaic(List<QRNode>, File input, File output) {
+
+    }
+    */
 }

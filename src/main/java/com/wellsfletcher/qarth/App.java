@@ -1,4 +1,5 @@
 package com.wellsfletcher.qarth;
+// import com.wellsfletcher.qarth.*;
 
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;

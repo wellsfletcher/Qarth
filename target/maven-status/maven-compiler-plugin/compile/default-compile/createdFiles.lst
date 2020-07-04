@@ -1,4 +1,4 @@
 com/wellsfletcher/qarth/App.class
-com/wellsfletcher/qarth/FileSystemUtils.class
 com/wellsfletcher/qarth/Generator.class
+com/wellsfletcher/qarth/util/FileSystem.class
 com/wellsfletcher/qarth/QRNode.class

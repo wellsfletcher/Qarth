@@ -1,4 +1,4 @@
-package com.wellsfletcher.qarth;
+package com.wellsfletcher.qarth.util;
 
 // general
 import java.io.*;
@@ -7,8 +7,8 @@ import java.nio.file.Paths;
 /**
  * Contains functionality for manipulating files.
  */
-public final class FileSystemUtils {
-    private FileSystemUtils() {}
+public final class FileSystem {
+    private FileSystem() {}
 
     public static String join(String directory, String name) {
         return Paths.get(directory, name).toString();
