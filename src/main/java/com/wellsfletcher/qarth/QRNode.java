@@ -39,6 +39,8 @@ public class QRNode extends QRCode {
      */
     public void create(File file) {
         String path = file.getPath();
+        // String extension = FileSystemUtils.getExtension(file);
+
         ByteArrayOutputStream bout = this
             .withSize(width, height)
             .to(ImageType.PNG)

@@ -15,10 +15,13 @@ public final class FileSystemUtils {
     }
 
     public static String getExtension(String path) {
-        File file = new File(path);
+        return getExtension(new File(path));
+    }
+
+    public static String getExtension(File file) {
         String name = file.getName();
-        int lastIndexOf = name.lastIndexOf(".");
-        if (lastIndexOf == -1) {
+        int lastIndexOf = name.lastIndexOf(".") + 1;
+        if (lastIndexOf == 0) {
             return ""; // empty extension
         }
         return name.substring(lastIndexOf);

@@ -126,11 +126,12 @@ public final class Generator {
     /**
      * Generates an image of a grid of QR codes.
      * @requires all the QR codes to be the same size
+     * @requires the given file to have a valid extension
      */
     public static void grid(QRNode[][] links, File file) {
         String directory = FileSystemUtils.includeTrailingSlash(file.getParent());
         String name = file.getName();
-        String extension = "";
+        String extension = FileSystemUtils.getExtension(file);
         String path = FileSystemUtils.join(directory, name);
 
         int width = links[0][0].getWidth();
@@ -146,7 +147,7 @@ public final class Generator {
         Graphics2D g2d = combined.createGraphics();
         for (QRNode[] linkRow : links) {
             for (QRNode link : linkRow) {
-                String tempImagePath = FileSystemUtils.join(directory, "_temp.png");
+                String tempImagePath = FileSystemUtils.join(directory, "_temp" + "." + extension);
                 File tempImageFile = new File(tempImagePath);
                 simple(link, tempImageFile);
 
@@ -167,7 +168,7 @@ public final class Generator {
         g2d.dispose();
 
         try {
-            ImageIO.write(combined, "png", file); // export concat image
+            ImageIO.write(combined, extension, file); // export concat image
         } catch (IOException e) {
             e.printStackTrace();
         }

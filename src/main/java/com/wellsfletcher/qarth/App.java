@@ -16,7 +16,7 @@ public class App {
         System.out.println( "Hello World!" );
 
         String dir = "/Users/wellsfletcher/Documents/OtherCode/Java/Ouputs/";
-        String name = "qrboy.png";
+        String name = "qrboy.jpg";
         // Generator.simple("https://youtu.be/dQw4w9WgXcQ", dir, "qr1.png");
 
         List<String> links = new LinkedList<>();
