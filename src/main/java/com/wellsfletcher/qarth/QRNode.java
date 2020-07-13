@@ -47,11 +47,11 @@ public class QRNode extends QRCode {
     public void create(File file) {
         String path = file.getPath();
         // String extension = FileSystemUtils.getExtension(file);
-        addHints();
 
         ByteArrayOutputStream bout = this
-            .withSize(width, height)
-            .withColor(style.getColor(), style.getBackgroundColor())
+            // .withSize(width, height)
+            // .withColor(style.getColor(), style.getBackgroundColor())
+            .withStyle(style)
             .to(ImageType.PNG)
             .stream();
 
@@ -68,17 +68,10 @@ public class QRNode extends QRCode {
         }
     }
 
-    private void addHints() {
-        hints.put(EncodeHintType.MARGIN, style.getMargin()); /* default = 4 */
-    }
-
-    /*
     public QRNode withStyle(Style style) {
         setStyle(style);
-        addHints();
         return this;
     }
-    */
 
     public static List<QRNode> from(final List<String> links) {
         List<QRNode> result = new LinkedList<>();
@@ -102,16 +95,26 @@ public class QRNode extends QRCode {
         return result;
     }
 
-    /*
-    public static void apply(final QRNode[][] codes, Style style) {
-
+    public static void setStyle(final String[][] links, Style style) {
+        setStyle(from(links), style);
     }
-    */
+
+    public static void setStyle(final QRNode[][] codes, Style style) {
+        for (int j = 0; j < codes.length; j++) {
+            for (int i = 0; i < codes[0].length; i++) {
+                codes[j][i].setStyle(style);
+            }
+        }
+    }
 
     public void setStyle(Style style) {
         this.style = style;
-        width = style.getWidth();
-        height = style.getHeight();
+        // width = style.getWidth();
+        // height = style.getHeight();
+        withSize(style.getWidth(), style.getHeight());
+        withHint(EncodeHintType.MARGIN, style.getMargin());
+        withColor(style.getColor(), style.getBackgroundColor());
+        // to(style.getExtension());
     }
 
     public int getWidth() {

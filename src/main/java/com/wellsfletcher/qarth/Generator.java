@@ -12,6 +12,7 @@ import java.io.*;
 // import java.nio.file;
 // import java.nio.Path;
 import java.nio.file.Paths;
+import java.lang.Math;
 
 // graphics
 import java.awt.image.BufferedImage;
@@ -52,13 +53,17 @@ public final class Generator {
         vertical(qrs, file);
     }
 
-    public static void vertical(List<QRNode> links, File file) {
+    public static void vertical(List<QRNode> codes, File file) {
+        /*
         int length = links.size();
         QRNode[][] grid = new QRNode[length][1];
         for (int k = 0; k < length; k++) {
             grid[k][0] = links.get(k);
         }
         grid(grid, file);
+        */
+        int columns = 1;
+        grid(codes, file, columns);
         /*
         String directory = FileSystem.includeTrailingSlash(file.getParent());
         String name = file.getName();
@@ -115,6 +120,32 @@ public final class Generator {
         grid(grid, file);
     }
 
+    public static void grid(List<String> links, String directory, String name, int columns) {
+        String path = FileSystem.join(directory, name);
+        grid(links, path, columns);
+    }
+
+    public static void grid(List<String> links, String path, int columns) {
+        List<QRNode> codes = QRNode.from(links);
+        File file = new File(path);
+        grid(codes, file, columns);
+    }
+
+    public static void grid(List<QRNode> codes, File file, int columns) {
+        int length = codes.size();
+        int rows = (int) Math.ceil(((double) length) / columns);
+        // int rows = (int) ((((double) length) / columns) + 0.5);
+        QRNode[][] grid = new QRNode[rows][columns];
+        int k = 0;
+        for (QRNode qr : codes) {
+            int row = (int) k / columns;
+            int column = k % columns;
+            grid[row][column] = qr;
+            k++;
+        }
+        grid(grid, file);
+    }
+
     public static void grid(String[][] links, String directory, String name) {
         String path = FileSystem.join(directory, name);
         grid(links, path);
@@ -142,31 +173,34 @@ public final class Generator {
         int rows = links.length;
         int columns = links[0].length;
 
-        int currentHeight = 0;
-        int currentWidth = 0;
         int totalHeight = height * rows;
         int totalWidth = width * columns;
-        BufferedImage combined = new BufferedImage(totalWidth, totalHeight, BufferedImage.TYPE_INT_RGB);
+        BufferedImage combined = new BufferedImage(totalWidth, totalHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = combined.createGraphics();
+
+        int currentHeight = 0;
         for (QRNode[] linkRow : links) {
+            int currentWidth = 0;
             for (QRNode link : linkRow) {
-                String tempImagePath = FileSystem.join(directory, "_temp" + "." + extension);
-                File tempImageFile = new File(tempImagePath);
-                simple(link, tempImageFile);
+                if (link != null) {
+                    String tempImagePath = FileSystem.join(directory, "_temp" + "." + extension);
+                    File tempImageFile = new File(tempImagePath);
+                    simple(link, tempImageFile);
 
-                try {
-                    BufferedImage image = ImageIO.read(tempImageFile);
-                    g2d.drawImage(image, currentHeight, currentWidth, null);
-                    currentHeight += image.getHeight();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    try {
+                        BufferedImage image = ImageIO.read(tempImageFile);
+                        g2d.drawImage(image, currentWidth, currentHeight, null);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    tempImageFile.delete();
+                    currentWidth += link.getWidth();
+                } else {
+                    // currentWidth += width;
                 }
-
-                tempImageFile.delete();
             }
-            currentHeight = 0;
-            // currentWidth += image.getWidth();
-            currentWidth += width;
+            currentHeight += linkRow[0].getHeight();
         }
         g2d.dispose();
 
@@ -188,4 +222,20 @@ public final class Generator {
 
     }
     */
+
+    public static void fromFile(String inputPath, String directory, String name, int columns) {
+        String path = FileSystem.join(directory, name);
+        fromFile(inputPath, path, columns);
+    }
+
+    public static void fromFile(String inputPath, String path, int columns) {
+        File file = new File(path);
+        fromFile(inputPath, file, columns);
+    }
+
+    public static void fromFile(String inputPath, File file, int columns) {
+        List<String> links = FileSystem.getLinesAsList(inputPath);
+
+        grid(links, file.getPath(), columns);
+    }
 }

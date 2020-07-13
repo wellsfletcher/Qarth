@@ -11,30 +11,23 @@ import java.awt.Color;
  * Holds information for styling a QR code.
  */
 public class Style {
-    private int width = 125;
-    private int height = 125;
-    private int margin = 4;
-    private int color = 0;
-    private int backgroundColor = -1; // Color.white;
+    private int width;
+    private int height;
+    private int margin = 8;
+    private int color = 0xFF000000;
+    private int backgroundColor = 0xFFFFFFFF;// -1; // Color.white;
 
     /*
-    private class Attribute {
-        T type;
-        Object value;
-        private Attribute(T type, Object value) {
-            this.type = type;
-            this.value = value;
-        }
-    }
-    Set<Attribute> attributes = new HashSet();
+    Map<StyleType, Object> attributes = new HashMap();
     */
 
     public Style() {
-
+        this(125, 125);
     }
 
     public Style(int width, int height) {
         setSize(width, height);
+        // setBackgroundColor(new Color(0x0FFFFFFF, true));
     }
 
     public void setWidth(int width) {
@@ -54,8 +47,16 @@ public class Style {
         this.margin = margin;
     }
 
+    public void setColor(Color color) {
+        setColor(toInt(color));
+    }
+
     public void setColor(int color) {
         this.color = color;
+    }
+
+    public void setBackgroundColor(Color backgroundColor) {
+        setBackgroundColor(toInt(backgroundColor));
     }
 
     public void setBackgroundColor(int backgroundColor) {
@@ -80,6 +81,10 @@ public class Style {
 
     public int getBackgroundColor() {
         return this.backgroundColor;
+    }
+
+    private int toInt(Color color) {
+        return color.hashCode();
     }
 
     public String toString() {
