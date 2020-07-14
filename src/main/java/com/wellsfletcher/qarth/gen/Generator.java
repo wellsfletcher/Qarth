@@ -1,4 +1,4 @@
-package com.wellsfletcher.qarth;
+package com.wellsfletcher.qarth.gen;
 
 // custom packages
 import com.wellsfletcher.qarth.util.FileSystem;

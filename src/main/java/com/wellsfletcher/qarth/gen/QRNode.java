@@ -1,4 +1,4 @@
-package com.wellsfletcher.qarth;
+package com.wellsfletcher.qarth.gen;
 
 // QR code generation
 import net.glxn.qrgen.core.image.ImageType;

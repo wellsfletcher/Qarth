@@ -1,5 +1,6 @@
-package com.wellsfletcher.qarth;
+package com.wellsfletcher.qarth.poster;
 import com.wellsfletcher.qarth.util.*;
+import com.wellsfletcher.qarth.gen.Generator;
 
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;

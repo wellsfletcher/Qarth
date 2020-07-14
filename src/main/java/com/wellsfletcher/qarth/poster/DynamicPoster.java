@@ -1,11 +1,10 @@
-package com.wellsfletcher.qarth;
+package com.wellsfletcher.qarth.poster;
 import com.wellsfletcher.qarth.util.*;
-
-import net.glxn.qrgen.core.image.ImageType;
-import net.glxn.qrgen.javase.QRCode;
+import com.wellsfletcher.qarth.gen.Generator;
 
 import java.io.*;
 import java.util.Scanner;
+import java.time.*;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -16,7 +15,7 @@ import java.util.HashSet;
 /**
  * Manages daily dynamic poster
  */
-public abstract class DynamicPoster extends EmptyPoster {
+public abstract class DynamicPoster extends EmptyPoster implements Dynamic {
     private static final String SOURCES_FOLDER_NAME = "resources";
 
     public DynamicPoster(String hostURL, String contentDirectory, String name) {
@@ -44,6 +43,10 @@ public abstract class DynamicPoster extends EmptyPoster {
         for (Poster poster : posters) {
             poster.create();
         }
+    }
+
+    public void update(LocalDateTime date) {
+
     }
 
     abstract protected Set<Poster> getSourcePosters();
