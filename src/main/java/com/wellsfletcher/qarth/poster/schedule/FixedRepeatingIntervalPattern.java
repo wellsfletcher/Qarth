@@ -10,15 +10,12 @@ import java.util.List;
 /**
  * Represents TemporalExpression.
  */
-public abstract class RepeatingIntervalPattern extends IntervalPattern {
-    protected Interval span;
+public class FixedRepeatingIntervalPattern extends RepeatingIntervalPattern {
+    protected Duration delay;
 
-    /**
-     * @param span the span in which events should repeat
-     */
-    public RepeatingIntervalPattern(Interval interval, Interval span) {
-        super(interval);
-        this.span = span;
+    public FixedRepeatingIntervalPattern(Interval interval, Interval span, Duration fixedDelay) {
+        super(interval, span);
+        this.delay = delay;
     }
 
     public Temporal adjustInto(Temporal temporal) {

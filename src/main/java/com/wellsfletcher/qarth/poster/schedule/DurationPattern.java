@@ -12,6 +12,6 @@ import java.util.List;
  */
 public class DurationPattern extends IntervalPattern {
     public DurationPattern(Duration delay, Duration duration) {
-        super(Schedule.timeNow().plus(delay), duration);
+        super(new Interval(Schedule.now().plus(delay), duration));
     }
 }

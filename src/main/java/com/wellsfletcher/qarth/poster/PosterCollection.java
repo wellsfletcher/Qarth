@@ -122,6 +122,14 @@ public abstract class PosterCollection extends EmptyPoster {
         poster.run();
     }
 
+    public void move(Poster poster) { // ideally should only have to override one of these
+        super.move(poster);
+    }
+
+    public void move(String path) {
+        super.move(path);
+    }
+
     /**
      * Removes extraneous files from this folder's directory.
      */

@@ -11,13 +11,10 @@ import java.util.List;
  * Represents TemporalExpression.
  */
 public class IntervalPattern implements TemporalExpression {
-    protected LocalDateTime start;
-    protected Duration duration;
+    Interval interval;
 
-    // public IntervalPattern(Instant start, Duration duration) {
-    public IntervalPattern(LocalDateTime start, Duration duration) {
-        this.start = start;
-        this.duration = duration;
+    public IntervalPattern(Interval interval) {
+        this.interval = interval;
     }
 
     public Temporal adjustInto(Temporal temporal) {
@@ -25,9 +22,9 @@ public class IntervalPattern implements TemporalExpression {
         // or can make it always return the even
         // should return the start date, or return the inputted date if the event is actively occurring
         LocalDateTime date = LocalDateTime.from(temporal);
-        LocalDateTime end = getEndDate();
         LocalDateTime result = date;
 
+        /*
         // int comparison = start.compareTo(date);
         if (start.compareTo(date) > 0) {
             result = start;
@@ -35,13 +32,13 @@ public class IntervalPattern implements TemporalExpression {
             result = end; // the result could equal null or a past date here
             // result = null;
         }
+        */
+        if (interval.isAfter(date)) {
+            result = interval.getStart();
+        } else if (interval.isBefore(date)) {
+            result = interval.getEnd();
+        }
 
         return result;
-    }
-
-    public LocalDateTime getEndDate() {
-        LocalDateTime end = start.plus(duration);
-        return end;
-
     }
 }

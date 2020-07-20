@@ -28,19 +28,19 @@ public class Schedule implements Schedulable {
             System.out.println("Beginning schedule execution.");
             Schedulable event = events.remove();
             ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
-            Duration delay = event.untilOccurrence(timeNow());
+            Duration delay = event.untilOccurrence(now());
             long millis = delay.toMillis();
             // service.schedule(event, millis, TimeUnit.MILLISECONDS);
             System.out.println("About to start thread.");
             service.schedule(() -> {
                 System.out.println("Woah, I am in a thread.");
-                long millis2 = event.untilOccurrence(Schedule.timeNow()).toMillis();
+                long millis2 = event.untilOccurrence(Schedule.now()).toMillis();
                 sleep(millis2);
                 event.run();
                 // sleep here?
-                // long millis = event.untilOccurrence(Schedule.timeNow());
+                // long millis = event.untilOccurrence(Schedule.now());
                 // Thread.sleep(2000);
-                while (event.isOccurring(timeNow())) {
+                while (event.isOccurring(now())) {
                     sleep(10);
                 }
                 // could also tell the event to stop here... in the case that the thread may have started another thread
@@ -55,10 +55,6 @@ public class Schedule implements Schedulable {
         }
     }
 
-    public Duration untilOccurrence() {
-        return untilOccurrence(timeNow());
-    }
-
     public Duration untilOccurrence(Temporal now) {
         Duration result = null;
 
@@ -67,10 +63,6 @@ public class Schedule implements Schedulable {
         }
 
         return result;
-    }
-
-    public Temporal nextOccurrence() {
-        return nextOccurrence(timeNow());
     }
 
     public Temporal nextOccurrence(Temporal now) {
@@ -83,10 +75,6 @@ public class Schedule implements Schedulable {
         return result;
     }
 
-    public boolean isOccurring() {
-        return isOccurring(timeNow());
-    }
-
     public boolean isOccurring(Temporal now) {
         if (events.isEmpty()) return false;
 
@@ -95,8 +83,8 @@ public class Schedule implements Schedulable {
     }
 
     public void forTomorrow(Runnable action) {
-        // TemporalExpression pattern = new DayPattern(timeNow().plusDays(1));
-        TemporalExpression pattern = new TomorrowPattern(timeNow().getDayOfWeek());
+        // TemporalExpression pattern = new DayPattern(now().plusDays(1));
+        TemporalExpression pattern = new TomorrowPattern(now().getDayOfWeek());
         // int priority = events.size();
         // Event event = new Event(action, pattern, priority);
         Event event = new Event(action, pattern); // causing issues
@@ -105,7 +93,7 @@ public class Schedule implements Schedulable {
 
     /*
     public void forDuration(Runnable action, LocalDateTime start, Duration duration) {
-        TemporalExpression pattern = new IntervalPattern(timeNow(), duration);
+        TemporalExpression pattern = new IntervalPattern(now(), duration);
         Event event = new Event(action, pattern);
         add(event);
     }
@@ -120,7 +108,7 @@ public class Schedule implements Schedulable {
 
     public void add(Schedulable event) {
         System.out.println("to add = " + event);
-        if (event.isFinished(timeNow())) return; // ideally shouldn't need to exist
+        if (event.isFinished(now())) return; // ideally shouldn't need to exist
         // if (event == null) return; // ideally shouldn't need to exist
         events.add(event);
         System.out.println("events = " + events);
@@ -136,7 +124,7 @@ public class Schedule implements Schedulable {
         System.out.println("Cleared.");
     }
 
-    public static LocalDateTime timeNow() {
+    public static LocalDateTime now() {
         return LocalDateTime.now();
     }
 

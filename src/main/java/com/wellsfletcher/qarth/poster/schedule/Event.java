@@ -39,11 +39,11 @@ public class Event implements Schedulable {
         String result = "";
 
         result += "[";
-        result += "isOccurring = " + isOccurring(Schedule.timeNow());
+        result += "isOccurring = " + isOccurring(Schedule.now());
         result += ", ";
-        result += "occurrs at " + nextOccurrence(Schedule.timeNow());
+        result += "occurrs at " + nextOccurrence(Schedule.now());
         result += ", ";
-        result += "happens in " + untilOccurrence(Schedule.timeNow());
+        result += "happens in " + untilOccurrence(Schedule.now());
         result += "]";
 
         return result;
