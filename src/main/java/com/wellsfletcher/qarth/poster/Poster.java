@@ -1,5 +1,6 @@
 package com.wellsfletcher.qarth.poster;
 import com.wellsfletcher.qarth.util.*;
+import com.wellsfletcher.qarth.poster.schedule.Schedule;
 import com.wellsfletcher.qarth.gen.Generator;
 
 import net.glxn.qrgen.core.image.ImageType;
