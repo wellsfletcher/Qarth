@@ -64,6 +64,7 @@ public class App {
 
         Poster poster = new GFWDynamicPoster();
         poster.create();
+        poster.run();
 
 
         String[][] table = {

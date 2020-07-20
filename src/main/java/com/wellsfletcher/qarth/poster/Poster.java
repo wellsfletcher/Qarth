@@ -15,21 +15,42 @@ import java.util.ArrayList;
 /**
  * Represents a poster of QR codes that link to a static html page.
  */
-public abstract class Poster {
+public abstract class Poster implements Runnable {
     protected static final String DELIM = FileSystem.DELIMITER;
 
     protected String name; // the name of the poster (should be short)
     protected String url; // the base url where the poster qr codes link to
     protected String content;
 
+    protected String contentPath;
+    protected String contentURL;
+
+    protected Schedule schedule;
+
     protected int count; // number of QR codes
 
     protected String getContentPath() {
-        return content + name + DELIM;
+        return contentPath;
     }
 
     protected String getContentURL() {
-        return url + name + DELIM;
+        return contentURL;
+    }
+
+    protected void setContentPath() {
+        setContentPath(content + name + DELIM);
+    }
+
+    protected void setContentURL() {
+        setContentURL(url + name + DELIM);
+    }
+
+    protected void setContentPath(String contentPath) {
+        this.contentPath = FileSystem.includeTrailingSlash(contentPath);
+    }
+
+    protected void setContentURL(String contentURL) {
+        this.contentURL = FileSystem.includeTrailingSlash(contentURL);
     }
 
     public Poster(String hostURL, String contentDirectory, String name) {
@@ -41,9 +62,12 @@ public abstract class Poster {
         this.content = contentDirectory;
         this.name = name;
         this.count = count;
+        setContentPath();
+        getContentURL();
 
         File dir = new File(getContentPath());
-
+        FileSystem.makeDirectory(dir);
+        /*
         if (!dir.exists()) {
             try {
                 dir.mkdir();
@@ -51,6 +75,10 @@ public abstract class Poster {
 
             }
         }
+        */
+
+        this.schedule = new Schedule();
+        schedule();
     }
 
     public void create(int count) {
@@ -73,7 +101,58 @@ public abstract class Poster {
         image(links, path);
     }
 
-    abstract protected void image(List<String> links, String path);
+    /*
+    public void create(String path) {
+
+    }
+    */
+
+    /**
+     * Runs the poster, so it's html content may be modified dynamically.
+     */
+    public void run() {
+        System.out.println("Running '" + name + "'.");
+        create();
+        schedule.run();
+    }
+
+    protected void schedule() {
+        // schedule.forNow(() -> do()); // do now until forever
+    }
+
+    protected Schedule getSchedule() {
+        return schedule;
+    }
+
+    /*
+    protected void merge(Poster poster) {
+        this.schedule.add(poster.getSchedule());
+    }
+    */
+
+    /*
+    public void start() {
+        // create();
+        schedule();
+        schedule.start();
+    }
+
+    protected void schedule() {
+        schedule.forNow(() -> do()); // do now until forever
+    }
+
+    protected void do() {
+        stop();
+    }
+     */
+
+    /**
+     * Stops the poster from running.
+     *
+    public void stop() {
+        schedule.stop();
+    }
+     */
 
     protected String getFileName(int index) {
         String result = "";
@@ -117,6 +196,35 @@ public abstract class Poster {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Copies the posters contents to a different directory.
+     * @requires the poster to have already been created
+     */
+    public void copy(String path) {
+        String source = getContentPath();
+        String destination = path;
+        String extension = "html";
+        FileSystem.copyFilesWithExtension(source, destination, extension);
+    }
+
+    public void move(Poster poster) {
+        content = poster.content;
+        // url = poster.url;
+        setContentPath(poster.getContentPath());
+        setContentURL(poster.getContentPath());
+    }
+
+    /**
+     * Retains string name.
+     */
+    public void move(String path) {
+        this.content = path;
+        setContentPath(path);
+        setContentURL();
+    }
+
+    abstract protected void image(List<String> links, String path);
 
     abstract protected String getFileContent(int index);
 }

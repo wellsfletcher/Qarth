@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.ArrayList;
 
+// 3rd party
+import org.apache.commons.io.FileUtils;
+
 /**
  * Contains functionality for manipulating files.
  */
@@ -65,6 +68,7 @@ public final class FileSystem {
     }
 
     public static int countLines(File file) {
+        System.out.println("Reading file at path " + file.getPath() + ".");
         return getLinesAsList(file).size();
     }
 
@@ -96,5 +100,10 @@ public final class FileSystem {
             e.printStackTrace();
         }
         return lines;
+    }
+
+    public static void copyFilesWithExtension(String source, String destination, String extension) {
+        // FileFilter filter = new WildcardFileFilter("*" + "." + extension);
+        // FileUtils.copyDirectory(new File(source), new File(destination), filter);
     }
 }

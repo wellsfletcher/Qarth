@@ -7,6 +7,7 @@ import net.glxn.qrgen.javase.QRCode;
 
 import java.io.*;
 import java.util.Scanner;
+import java.time.*;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -17,8 +18,8 @@ import java.util.HashSet;
 /**
  * Manages daily dynamic poster
  */
-public class GFWDynamicPoster extends DynamicPoster {
-    protected String inputDirectory;
+public class GFWDynamicPoster extends PosterCollection {
+    protected static String inputDirectory = "/Users/wellsfletcher/Documents/OtherCode/Java/Inputs/qr/";
 
     protected String getInputPath() {
         return inputDirectory + name + DELIM;
@@ -36,12 +37,13 @@ public class GFWDynamicPoster extends DynamicPoster {
             5 // columns
         );
 
-        inputDirectory = "/Users/wellsfletcher/Documents/OtherCode/Java/Inputs/qr/";
+        // inputDirectory = "/Users/wellsfletcher/Documents/OtherCode/Java/Inputs/qr/";
         FileSystem.makeDirectory(inputDirectory);
+        // createSourcePosters();
     }
 
-    protected Set<Poster> getSourcePosters() {
-        Set<Poster> result = new HashSet();
+    protected List<Poster> createSourcePosters() { // as of now, may use uninitiallized values
+        List<Poster> result = new ArrayList();
 
         String inputDir = getInputPath();
         String url = getResourcesURL();
@@ -60,12 +62,19 @@ public class GFWDynamicPoster extends DynamicPoster {
         inputFileName = posterName + ".txt";
         inputFilePath = inputDir + inputFileName;
         Poster bee = new FilePoster(url, path, posterName, inputFilePath, columns);
+        // schedule.forTomorrow(() -> poster.run());
+        // schedule.forTomorrow(bee); // this should occur elsewhere?
+        Duration delay = Duration.ofSeconds(20);
+        schedule.afterDuration(bee, delay);
 
         posterName = "fun-links";
         inputFileName = posterName + ".txt";
         inputFilePath = inputDir + inputFileName;
         Poster funLinks = new RedirectPoster(url, path, posterName, inputFilePath, columns);
 
+        // Poster birth = new BirthdayPoster();
+        // schedule.add(poster.getSchedule());
+        // merge(birth);
 
         result.add(phantom);
         result.add(bee);
@@ -73,4 +82,10 @@ public class GFWDynamicPoster extends DynamicPoster {
 
         return result;
     }
+
+    /*
+    protected void add(Poster poster) {
+
+    }
+    */
 }

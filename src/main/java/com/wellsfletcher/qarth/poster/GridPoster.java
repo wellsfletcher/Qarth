@@ -1,6 +1,6 @@
 package com.wellsfletcher.qarth.poster;
 import com.wellsfletcher.qarth.util.*;
-import com.wellsfletcher.qarth.gen.Generator;
+import com.wellsfletcher.qarth.gen.*;
 
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;
@@ -41,7 +41,11 @@ public abstract class GridPoster extends Poster {
             + ", " + "path = " + path
         );
         */
-        Generator.grid(links, path, columns);
+        List<QRNode> codes = QRNode.from(links);
+        File file = new File(path);
+        codes = style(codes);
+        Generator.grid(codes, file, columns);
+        // Generator.grid(links, path, columns);
     }
 
     protected String getFileContent(int row, int column) {
@@ -53,5 +57,9 @@ public abstract class GridPoster extends Poster {
         this.rows = rows;
         this.columns = columns;
         this.count = rows * columns;
+    }
+
+    protected List<QRNode> style(List<QRNode> codes) {
+        return codes;
     }
 }
