@@ -13,6 +13,10 @@ import java.util.List;
 public abstract class RepeatingIntervalPattern extends IntervalPattern {
     protected Interval span;
 
+    public RepeatingIntervalPattern(Interval interval) {
+        this(interval, new Interval(Interval.MIN, Interval.MAX));
+    }
+
     /**
      * @param span the span in which events should repeat
      */

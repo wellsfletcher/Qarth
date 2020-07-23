@@ -100,8 +100,13 @@ public class Schedule implements Schedulable {
     */
     public void afterDuration(Runnable action, Duration duration) {
         // Duration length = Duration.ofMinutes(1);
-        Duration length = Duration.ofSeconds(20);
+        Duration length = Duration.ofSeconds(10);
         TemporalExpression pattern = new DurationPattern(duration, length);
+        Event event = new Event(action, pattern);
+        add(event);
+    }
+
+    public void add(Runnable action, TemporalExpression pattern) {
         Event event = new Event(action, pattern);
         add(event);
     }

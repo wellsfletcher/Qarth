@@ -1,6 +1,7 @@
 package com.wellsfletcher.qarth.poster;
 import com.wellsfletcher.qarth.util.*;
 import com.wellsfletcher.qarth.gen.Generator;
+import com.wellsfletcher.qarth.poster.schedule.*;
 
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;
@@ -53,10 +54,15 @@ public class GFWDynamicPoster extends PosterCollection {
         String inputFileName;
         String inputFilePath;
 
+        Duration delay;
+        TemporalExpression pattern;
+
         posterName = "phantom";
         inputFileName = posterName + ".txt";
         inputFilePath = inputDir + inputFileName;
         Poster phantom = new FilePoster(url, path, posterName, inputFilePath, columns);
+        pattern = new ModPattern(Schedule.now(), 3, 0);
+        schedule.add(phantom, pattern);
 
         posterName = "bee";
         inputFileName = posterName + ".txt";
@@ -64,13 +70,15 @@ public class GFWDynamicPoster extends PosterCollection {
         Poster bee = new FilePoster(url, path, posterName, inputFilePath, columns);
         // schedule.forTomorrow(() -> poster.run());
         // schedule.forTomorrow(bee); // this should occur elsewhere?
-        Duration delay = Duration.ofSeconds(20);
+        delay = Duration.ofSeconds(10);
         schedule.afterDuration(bee, delay);
 
         posterName = "fun-links";
         inputFileName = posterName + ".txt";
         inputFilePath = inputDir + inputFileName;
         Poster funLinks = new RedirectPoster(url, path, posterName, inputFilePath, columns);
+        delay = Duration.ofSeconds(25);
+        schedule.afterDuration(funLinks, delay);
 
         // Poster birth = new BirthdayPoster();
         // schedule.add(poster.getSchedule());

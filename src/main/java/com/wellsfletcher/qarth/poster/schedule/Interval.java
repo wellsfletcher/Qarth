@@ -216,6 +216,9 @@ public class Interval implements Comparable<Interval>, Operatable<Interval> {
         return end.equals(LocalDateTime.MAX);
     }
 
+    public static LocalDateTime MIN = LocalDateTime.MIN;
+    public static LocalDateTime MAX = LocalDateTime.MAX;
+
     /**
      * Returns a copy of this range with the specified start instant.
      *
@@ -234,6 +237,14 @@ public class Interval implements Comparable<Interval>, Operatable<Interval> {
      */
     public Interval withEnd(LocalDateTime end) {
         return Interval.of(start, end);
+    }
+
+    public static Interval fromDay(LocalDateTime date) {
+        return fromDay(date.toLocalDate());
+    }
+
+    public static Interval fromDay(LocalDate date) {
+        return new Interval(date.atStartOfDay(), date.atStartOfDay().plusDays(1));
     }
 
     /**
