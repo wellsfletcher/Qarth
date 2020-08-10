@@ -247,6 +247,10 @@ public class Interval implements Comparable<Interval>, Operatable<Interval> {
         return new Interval(date.atStartOfDay(), date.atStartOfDay().plusDays(1));
     }
 
+    public static Interval reals() {
+        return new Interval(Interval.MIN, Interval.MAX);
+    }
+
     /**
      * Checks if this interval is equal to another interval.
      *

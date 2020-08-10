@@ -63,16 +63,32 @@ public class App {
         // Generator.fromFile(input + "phantom.txt", dir, name, 27);
 
         Poster poster = new GFWDynamicPoster();
-        poster.create();
+        // poster.create();
         poster.run();
 
 
+        /*
         String[][] table = {
             {"https://www.google.com/search?q=poop&sxsrf=ALeKk013AfUsrBOIuep2pgtykzDPtiBtDw:1592456127675&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj1q72uyYrqAhXsUt8KHbM-AHQQ_AUoAXoECBEQAw&biw=1795&bih=921", "https://scontent-ort2-2.xx.fbcdn.net/v/t1.0-9/28279055_109725583190193_9044741175698667605_n.jpg?_nc_cat=108&_nc_sid=09cbfe&_nc_ohc=N1h1-NG7A80AX9-faeH&_nc_ht=scontent-ort2-2.xx&oh=d890b84ba69a3a3ef695e02953536a37&oe=5F137C25", "https://kahoot.it/"},
             {"https://fletcherwells.com/", "https://www.youtube.com/playlist?list=PLXKAG8g1Ls_Ax-SU7rCgyiGWjylB5NHL-", "https://youtu.be/qTUnDV3MgVQ"}
         };
+         */
+        String[][] table = {
+            {"https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/"},
+            {"https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/"},
+            {"https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/"},
+            {"https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/"},
+            {"https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/", "https://marbles.fletcherwells.com/"}
+        };
         name = "grid-simple.png";
-        Generator.grid(table, dir, name);
+        QRNode[][] codes = QRNode.from(table);
+        // Styler.rgbCorners(codes);
+        // Styler.randomSettingTones(codes);
+        // Styler.randomStoplight(codes);
+        Styler.testColors(codes);
+        // Styler.randomStoplight(codes);
+        // Generator.grid(table, dir, name);
+        Generator.grid(codes, new File(dir + name));
 
         System.out.println("Finished.");
     }

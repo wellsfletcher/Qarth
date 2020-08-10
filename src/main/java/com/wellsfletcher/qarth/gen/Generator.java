@@ -132,6 +132,7 @@ public final class Generator {
     }
 
     public static void grid(List<QRNode> codes, File file, int columns) {
+        /*
         int length = codes.size();
         int rows = (int) Math.ceil(((double) length) / columns);
         // int rows = (int) ((((double) length) / columns) + 0.5);
@@ -143,6 +144,8 @@ public final class Generator {
             grid[row][column] = qr;
             k++;
         }
+         */
+        QRNode[][] grid = QRNode.fromGridList(codes, columns);
         grid(grid, file);
     }
 

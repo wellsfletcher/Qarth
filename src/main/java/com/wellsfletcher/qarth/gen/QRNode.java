@@ -95,6 +95,22 @@ public class QRNode extends QRCode {
         return result;
     }
 
+    public static QRNode[][] fromGridList(final List<QRNode> codes, int columns) {
+        int length = codes.size();
+        int rows = (int) Math.ceil(((double) length) / columns);
+        // int rows = (int) ((((double) length) / columns) + 0.5);
+        QRNode[][] grid = new QRNode[rows][columns];
+        int k = 0;
+        for (QRNode qr : codes) {
+            int row = (int) k / columns;
+            int column = k % columns;
+            grid[row][column] = qr;
+            k++;
+        }
+
+        return grid;
+    }
+
     public static void setStyle(final String[][] links, Style style) {
         setStyle(from(links), style);
     }

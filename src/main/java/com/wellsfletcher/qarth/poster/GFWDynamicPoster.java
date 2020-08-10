@@ -60,14 +60,14 @@ public class GFWDynamicPoster extends PosterCollection {
         posterName = "phantom";
         inputFileName = posterName + ".txt";
         inputFilePath = inputDir + inputFileName;
-        Poster phantom = new FilePoster(url, path, posterName, inputFilePath, columns);
+        Poster phantom = new FilePoster(url, path, posterName, inputFilePath, rows, columns);
         pattern = new ModPattern(Schedule.now(), 3, 0);
         schedule.add(phantom, pattern);
 
         posterName = "bee";
         inputFileName = posterName + ".txt";
         inputFilePath = inputDir + inputFileName;
-        Poster bee = new FilePoster(url, path, posterName, inputFilePath, columns);
+        Poster bee = new FilePoster(url, path, posterName, inputFilePath, rows, columns);
         // schedule.forTomorrow(() -> poster.run());
         // schedule.forTomorrow(bee); // this should occur elsewhere?
         delay = Duration.ofSeconds(10);
@@ -76,7 +76,7 @@ public class GFWDynamicPoster extends PosterCollection {
         posterName = "fun-links";
         inputFileName = posterName + ".txt";
         inputFilePath = inputDir + inputFileName;
-        Poster funLinks = new RedirectPoster(url, path, posterName, inputFilePath, columns);
+        Poster funLinks = new RedirectPoster(url, path, posterName, inputFilePath, rows, columns);
         delay = Duration.ofSeconds(25);
         schedule.afterDuration(funLinks, delay);
 
@@ -90,6 +90,12 @@ public class GFWDynamicPoster extends PosterCollection {
 
         return result;
     }
+
+    /*
+    protected void schedule() {
+
+    }
+    */
 
     /*
     protected void add(Poster poster) {

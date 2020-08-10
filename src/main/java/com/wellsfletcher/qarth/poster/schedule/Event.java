@@ -21,6 +21,7 @@ public class Event implements Schedulable {
 
     public void run() {
         action.run();
+        System.out.println("Running action event '" + action + "'.");
     }
 
     public Duration untilOccurrence(Temporal now) {
@@ -39,6 +40,8 @@ public class Event implements Schedulable {
         String result = "";
 
         result += "[";
+        result += "action = " + action;
+        result += ", ";
         result += "isOccurring = " + isOccurring(Schedule.now());
         result += ", ";
         result += "occurrs at " + nextOccurrence(Schedule.now());

@@ -32,6 +32,10 @@ public class RedirectPoster extends FilePoster {
         super(hostURL, contentDirectory, name, inputFilePath, columns);
     }
 
+    public RedirectPoster(String hostURL, String contentDirectory, String name, String inputFilePath, int rows, int columns) {
+        super(hostURL, contentDirectory, name, inputFilePath, rows, columns);
+    }
+
     protected String getFileContent(int index) {
         String result = "";
         String link = super.getFileContent(index);

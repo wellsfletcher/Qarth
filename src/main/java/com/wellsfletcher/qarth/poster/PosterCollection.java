@@ -1,4 +1,7 @@
 package com.wellsfletcher.qarth.poster;
+import com.wellsfletcher.qarth.poster.schedule.ModPattern;
+import com.wellsfletcher.qarth.poster.schedule.Schedule;
+import com.wellsfletcher.qarth.poster.schedule.*;
 import com.wellsfletcher.qarth.util.*;
 import com.wellsfletcher.qarth.gen.Generator;
 
@@ -18,7 +21,14 @@ import java.util.HashSet;
  */
 public abstract class PosterCollection extends EmptyPoster {
     private static final String SOURCES_FOLDER_NAME = "resources";
-    protected List<Poster> posters;
+    protected List<Poster> posters = new LinkedList<>();
+
+    /*
+    protected void setup() {
+        posters = new LinkedList<>();
+        posters = createSourcePosters();
+    }
+    */
 
     public PosterCollection(String hostURL, String contentDirectory, String name) {
         this(hostURL, contentDirectory, name, 5, 4);
@@ -29,6 +39,7 @@ public abstract class PosterCollection extends EmptyPoster {
 
         FileSystem.makeDirectory(getResourcesPath());
         posters = createSourcePosters(); // may move this so subclasses can more easily use instance variables
+        schedule();
     }
 
     protected String getResourcesPath() {
@@ -86,6 +97,18 @@ public abstract class PosterCollection extends EmptyPoster {
         schedule.run(); // delete later
 
         // may need to move the posters back afterwards
+    }
+
+    protected void schedule() {
+        schedule.clear();
+        int length = posters.size();
+        int k = 0;
+        LocalDateTime currentTime = Schedule.now();
+        for (Poster poster : posters) {
+            // TemporalExpression pattern = new ModPattern(Schedule.now(), k++, length);
+            TemporalExpression pattern = new ModPattern(Schedule.now(), length, k++);
+            schedule.add(poster, pattern);
+        }
     }
 
     /*

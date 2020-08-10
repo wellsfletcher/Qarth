@@ -31,10 +31,27 @@ public class FilePoster extends GridPoster {
         this(hostURL, contentDirectory, name, FileSystem.join(contentDirectory, DEFAULT_INPUT_FILE_NAME), columns);
     }
 
+    public FilePoster(String hostURL, String contentDirectory, String name, int rows, int columns) {
+        this(hostURL, contentDirectory, name, FileSystem.join(contentDirectory, DEFAULT_INPUT_FILE_NAME), rows, columns);
+    }
+
+    /*
     public FilePoster(String hostURL, String contentDirectory, String name, String inputFilePath, int columns) {
         super(hostURL, contentDirectory, name, 0, columns);
         this.input = inputFilePath;
         this.count = FileSystem.countLines(input);
+    }
+    */
+
+    public FilePoster(String hostURL, String contentDirectory, String name, String inputFilePath, int columns) {
+        this(hostURL, contentDirectory, name, inputFilePath,0, columns);
+        this.count = FileSystem.countLines(input);
+    }
+
+    public FilePoster(String hostURL, String contentDirectory, String name, String inputFilePath, int rows, int columns) {
+        super(hostURL, contentDirectory, name, rows, columns);
+        this.input = inputFilePath;
+        // this.count = FileSystem.countLines(input);
     }
 
     public void create(int columns) {

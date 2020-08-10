@@ -79,7 +79,8 @@ public abstract class Poster implements Runnable {
         */
 
         this.schedule = new Schedule();
-        schedule();
+        // setup();
+        // schedule();
     }
 
     public void create(int count) {
@@ -175,7 +176,7 @@ public abstract class Poster implements Runnable {
             int value = curr;
             curr = (char) (((value - ZERO + SHIFT) % ALPHABET_LENGTH) + A);
             // curr = (char) ((currValue - (int) '0') + (int) 'a' + 3) % 26;
-            // esult += (char) (((int) curr) + shift);
+            // result += (char) (((int) curr) + shift);
             result += curr;
 
         }
@@ -223,6 +224,12 @@ public abstract class Poster implements Runnable {
         this.content = path;
         setContentPath(path);
         setContentURL();
+    }
+
+    public String toString() {
+        String result = "";
+        result += name;
+        return result;
     }
 
     abstract protected void image(List<String> links, String path);
