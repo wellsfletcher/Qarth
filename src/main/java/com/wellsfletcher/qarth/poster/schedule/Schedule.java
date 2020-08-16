@@ -4,6 +4,8 @@ import com.wellsfletcher.qarth.gen.Generator;
 
 import java.time.*;
 import java.time.temporal.*;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.Executors;
@@ -23,9 +25,15 @@ public class Schedule implements Schedulable {
         this.events = new PriorityQueue<>();
     }
 
+    private static <T> PriorityQueue<T> rebuildHeap(PriorityQueue<T> heap) {
+        // return new PriorityQueue<T>(heap);
+        return new PriorityQueue<T>((Collection<? extends T>) Arrays.asList(heap.toArray()));
+    }
+
     public void run() {
         if (!events.isEmpty()) { // issues
             System.out.println("Beginning schedule execution.");
+            events = rebuildHeap(events);
             Schedulable event = events.remove();
             ScheduledExecutorService service = Executors.newScheduledThreadPool(1);
             Duration delay = event.untilOccurrence(now());
@@ -40,14 +48,16 @@ public class Schedule implements Schedulable {
                 // sleep here?
                 // long millis = event.untilOccurrence(Schedule.now());
                 // Thread.sleep(2000);
+                // while (event.isOccurring(now()) || isOccurring(now())) {
                 while (event.isOccurring(now())) {
-                    sleep(10);
+                    sleep(100);
                 }
                 // could also tell the event to stop here... in the case that the thread may have started another thread
                 // ... or I could move this stuff out of here so then the action can take as long as it wants doing its thing
+                // events = rebuildHeap(events);
                 add(event);
                 run();
-                System.out.println("Ok, this thread is done.");
+                System.out.println("Ok, this thread is done." + "Events = " + events);
             }, millis, TimeUnit.MILLISECONDS);
             service.shutdown();
         } else {
@@ -59,7 +69,7 @@ public class Schedule implements Schedulable {
         Duration result = null;
 
         if (!events.isEmpty()) {
-            result = events.remove().untilOccurrence(now);
+            result = events.peek().untilOccurrence(now);
         }
 
         return result;
@@ -69,7 +79,7 @@ public class Schedule implements Schedulable {
         Temporal result = null;
 
         if (!events.isEmpty()) {
-            result = events.remove().nextOccurrence(now);
+            result = events.peek().nextOccurrence(now);
         }
 
         return result;
@@ -80,6 +90,7 @@ public class Schedule implements Schedulable {
 
         Schedulable event = events.peek();
         return event.isOccurring(now);
+        // return event.isOccurring(now) || rebuildHeap(events).peek().isOccurring(now);
     }
 
     public void forTomorrow(Runnable action) {
@@ -88,6 +99,12 @@ public class Schedule implements Schedulable {
         // int priority = events.size();
         // Event event = new Event(action, pattern, priority);
         Event event = new Event(action, pattern); // causing issues
+        add(event);
+    }
+
+    public void annually(Runnable action, LocalDateTime date) {
+        TemporalExpression pattern = new AnnualPattern(date);
+        Event event = new Event(action, pattern);
         add(event);
     }
 
@@ -116,8 +133,20 @@ public class Schedule implements Schedulable {
         if (event.isFinished(now())) return; // ideally shouldn't need to exist
         // if (event == null) return; // ideally shouldn't need to exist
         events.add(event);
+
+        events = rebuildHeap(events);
         System.out.println("events = " + events);
         System.out.println("Event added!");
+    }
+
+    public void add(Collection<Schedulable> events) {
+        for (Schedulable event : events) {
+            add(event);
+        }
+    }
+
+    public Collection<Schedulable> getEvents() {
+        return events;
     }
 
     /**
@@ -127,6 +156,10 @@ public class Schedule implements Schedulable {
         System.out.println("Clearing...");
         events.clear();
         System.out.println("Cleared.");
+    }
+
+    public boolean isEmpty() {
+        return events.isEmpty();
     }
 
     public static LocalDateTime now() {

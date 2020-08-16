@@ -44,6 +44,8 @@ public interface Schedulable extends Runnable, Comparable<Schedulable> {
         }
         Duration timeUntilThisEvent = this.untilOccurrence(now);
         Duration timeUntilOtherEvent = other.untilOccurrence(now);
+        boolean isThisEventOccurring = isOccurring(now);
+        boolean isOtherEventOccurring = other.isOccurring(now);
 
         if (timeUntilThisEvent == null && timeUntilOtherEvent == null) return 0;
         if (timeUntilThisEvent == null) return -1;

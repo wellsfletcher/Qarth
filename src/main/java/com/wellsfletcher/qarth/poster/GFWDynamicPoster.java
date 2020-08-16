@@ -80,13 +80,18 @@ public class GFWDynamicPoster extends PosterCollection {
         delay = Duration.ofSeconds(25);
         schedule.afterDuration(funLinks, delay);
 
-        // Poster birth = new BirthdayPoster();
-        // schedule.add(poster.getSchedule());
+        posterName = "fletcher";
+        inputFileName = "birthdays/" + posterName + ".xml";
+        inputFilePath = inputDir + inputFileName;
+        Poster birth = new BirthdayPoster(url, path, posterName, inputFilePath, rows, columns);
+        // schedule.add(birth.getSchedule());
         // merge(birth);
 
+        result.add(birth);
         result.add(phantom);
         result.add(bee);
         result.add(funLinks);
+        // result.add(birth);
 
         return result;
     }

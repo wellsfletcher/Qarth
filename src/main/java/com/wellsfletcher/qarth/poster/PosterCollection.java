@@ -89,8 +89,8 @@ public abstract class PosterCollection extends EmptyPoster {
 
         for (Poster poster : posters) {
             poster.move(this);
-            System.out.println("Adding " + poster.name + " poster events.");
-            schedule.add(poster.schedule); // operation should be equivalent to adding an array to another array
+            // System.out.println("Adding " + poster.name + " poster events.");
+            // schedule.add(poster.schedule); // operation should be equivalent to adding an array to another array
         }
 
         // super.run();
@@ -101,13 +101,29 @@ public abstract class PosterCollection extends EmptyPoster {
 
     protected void schedule() {
         schedule.clear();
-        int length = posters.size();
+
+        int numberOfModPatternPosters = 0;
+
+        for (Poster poster : posters) {
+            if (poster.getSchedule().isEmpty()) {
+                numberOfModPatternPosters++;
+            }
+        }
+
+        // int length = posters.size() - 1;
+        int length = numberOfModPatternPosters;
+        // int length = 4;
         int k = 0;
         LocalDateTime currentTime = Schedule.now();
         for (Poster poster : posters) {
-            // TemporalExpression pattern = new ModPattern(Schedule.now(), k++, length);
-            TemporalExpression pattern = new ModPattern(Schedule.now(), length, k++);
-            schedule.add(poster, pattern);
+            if (poster.getSchedule().isEmpty()) {
+                // TemporalExpression pattern = new ModPattern(Schedule.now(), k++, length);
+                TemporalExpression pattern = new ModPattern(Schedule.now(), length, k++);
+                schedule.add(poster, pattern);
+            } else {
+                // schedule.add(poster.getSchedule());
+                schedule.add(poster.getSchedule().getEvents());
+            }
         }
     }
 

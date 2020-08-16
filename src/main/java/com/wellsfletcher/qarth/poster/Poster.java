@@ -115,7 +115,7 @@ public abstract class Poster implements Runnable {
     public void run() {
         System.out.println("Running '" + name + "'.");
         create();
-        schedule.run();
+        // schedule.run();
     }
 
     protected void schedule() {
