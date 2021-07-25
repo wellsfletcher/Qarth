@@ -27,6 +27,11 @@
       <artifactId>javase</artifactId>
       <version>2.6.0</version>
     </dependency>
+    <dependency>
+      <groupId>se.michaelthelin.spotify</groupId>
+      <artifactId>spotify-web-api-java</artifactId>
+      <version>6.3.0</version>
+    </dependency>
   </dependencies>
   <scm>
     <connection>scm:git:git@github.com:wellsfletcher/Qarth.git</connection>

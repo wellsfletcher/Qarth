@@ -1,20 +1,15 @@
 package com.wellsfletcher.qarth.poster;
+import com.wellsfletcher.qarth.spotify.Albums;
+import com.wellsfletcher.qarth.spotify.Playlists;
 import com.wellsfletcher.qarth.util.*;
-import com.wellsfletcher.qarth.gen.Generator;
-import com.wellsfletcher.qarth.poster.schedule.*;
+import com.wellsfletcher.qarth.util.time.pattern.ModPattern;
+import com.wellsfletcher.qarth.util.time.pattern.TemporalExpression;
+import com.wellsfletcher.qarth.util.time.schedule.*;
 
-import net.glxn.qrgen.core.image.ImageType;
-import net.glxn.qrgen.javase.QRCode;
-
-import java.io.*;
-import java.util.Scanner;
 import java.time.*;
 
 import java.util.List;
-import java.util.LinkedList;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
 
 /**
  * Manages daily dynamic poster
@@ -32,7 +27,7 @@ public class GFWDynamicPoster extends PosterCollection {
         // .../New-Personal-Website/qr/b/
         // .../New-Personal-Website/qr/b/sources/
         super("https://wellsfletcher.com/qr/",
-            "/Users/wellsfletcher/Documents/OtherCode/HTML/New-Personal-Website/qr/",
+            "/Users/wellsfletcher/Documents/OtherCode/HTML/PersonalWebsite/qr/",
             "h", // name
             5, // rows
             5 // columns
@@ -80,14 +75,29 @@ public class GFWDynamicPoster extends PosterCollection {
         delay = Duration.ofSeconds(25);
         schedule.afterDuration(funLinks, delay);
 
+        /*
         posterName = "fletcher";
         inputFileName = "birthdays/" + posterName + ".xml";
         inputFilePath = inputDir + inputFileName;
         Poster birth = new BirthdayPoster(url, path, posterName, inputFilePath, rows, columns);
         // schedule.add(birth.getSchedule());
         // merge(birth);
+        */
 
-        result.add(birth);
+        posterName = "albums";
+        Poster albums = new AlbumPoster(url, path, posterName, Albums.COSTELLO_MUSIC, rows, columns);
+
+        posterName = "mmmmList";
+        Poster mmmmList = new PlaylistPoster(url, path, posterName, Playlists.MMMM_LIST, rows, columns);
+
+        posterName = "album-art";
+        // Poster albumArt = new AlbumArtworkPoster(url, path, posterName, Albums.valuesAsList(), rows, columns);
+        Poster albumArt = new PlaylistAlbumArtworkPoster(url, path, posterName, Playlists.COLLEGE_ROOM, rows, columns);
+
+        // result.add(birth);
+        result.add(albumArt);
+        result.add(mmmmList);
+        result.add(albums);
         result.add(phantom);
         result.add(bee);
         result.add(funLinks);

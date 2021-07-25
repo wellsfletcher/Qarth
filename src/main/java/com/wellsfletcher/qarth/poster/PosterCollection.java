@@ -1,20 +1,13 @@
 package com.wellsfletcher.qarth.poster;
-import com.wellsfletcher.qarth.poster.schedule.ModPattern;
-import com.wellsfletcher.qarth.poster.schedule.Schedule;
-import com.wellsfletcher.qarth.poster.schedule.*;
+import com.wellsfletcher.qarth.util.time.pattern.ModPattern;
+import com.wellsfletcher.qarth.util.time.pattern.TemporalExpression;
+import com.wellsfletcher.qarth.util.time.schedule.Schedule;
 import com.wellsfletcher.qarth.util.*;
-import com.wellsfletcher.qarth.gen.Generator;
 
-import java.io.*;
-import java.util.Scanner;
 import java.time.*;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.LinkedList;
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.HashSet;
 
 /**
  * Manages daily dynamic poster

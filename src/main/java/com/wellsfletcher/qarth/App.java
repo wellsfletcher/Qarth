@@ -2,6 +2,8 @@ package com.wellsfletcher.qarth;
 import com.wellsfletcher.qarth.gen.*;
 import com.wellsfletcher.qarth.poster.*;
 
+import com.wellsfletcher.qarth.spotify.Playlists;
+import com.wellsfletcher.qarth.spotify.SpotifyGenerator;
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;
 import java.io.*;
@@ -14,6 +16,14 @@ import java.util.LinkedList;
  *
  */
 public class App {
+    public static void mainTester(String[] args) {
+        enumerateIntegerPairsOfAspectRatio(2, 3);
+        System.out.println();
+        enumerateIntegerPairsOfAspectRatio(3, 4);
+        System.out.println();
+        enumerateIntegerPairsOfAspectRatio(3, 5);
+    }
+
     public static void main(String[] args) {
         System.out.println( "Hello World!" );
 
@@ -27,7 +37,7 @@ public class App {
         links.add("https://youtu.be/dQw4w9WgXcQ");
         links.add("https://stackoverflow.com/questions/601274/how-do-i-properly-load-a-bufferedimage-in-java");
         links.add("https://www.google.com/search?q=poop&sxsrf=ALeKk013AfUsrBOIuep2pgtykzDPtiBtDw:1592456127675&source=lnms&tbm=isch&sa=X&ved=2ahUKEwj1q72uyYrqAhXsUt8KHbM-AHQQ_AUoAXoECBEQAw&biw=1795&bih=921");
-        Generator.vertical(links, dir, name);
+        //- Generator.vertical(links, dir, name);
 
         /*
         String[][] table = {
@@ -62,10 +72,19 @@ public class App {
         // name = "phantom.png";
         // Generator.fromFile(input + "phantom.txt", dir, name, 27);
 
-        Poster poster = new GFWDynamicPoster();
-        // poster.create();
-        poster.run();
+        name = "fletcher-collage-horizontal.png";
+        File file = new File(dir + name);
+        // SpotifyGenerator.grid(Playlists.COLLEGE_ROOM, file, 7, 5); // BANGKOK_BLUES
+        // SpotifyGenerator.grid(Playlists.RAM_RANCH, file, 7, 5);
+        // SpotifyGenerator.grid(Playlists.RAM_RANCH, file, 23, 14); // 25, 15
+        // SpotifyGenerator.grid(Playlists.RAM_RANCH, file, 12, 8); // 11, 7
+        // SpotifyGenerator.grid(Playlists.RYAN_TOP_2020, file, 6, 10);
+        // SpotifyGenerator.grid(Playlists.FLETCHER_TOP_2020, file, 9, 6);
+        // SpotifyGenerator.grid(Playlists.FLETCHER_TOP_2020, file, 6, 10);
 
+        Poster poster = new GFWDynamicPoster();
+        poster.create();
+        poster.run();
 
         /*
         String[][] table = {
@@ -85,10 +104,10 @@ public class App {
         // Styler.rgbCorners(codes);
         // Styler.randomSettingTones(codes);
         // Styler.randomStoplight(codes);
-        Styler.testColors(codes);
+        //- Styler.testColors(codes);
         // Styler.randomStoplight(codes);
         // Generator.grid(table, dir, name);
-        Generator.grid(codes, new File(dir + name));
+        //- Generator.grid(codes, new File(dir + name));
 
         System.out.println("Finished.");
     }
@@ -101,5 +120,30 @@ public class App {
             result += (char) (((int) curr) + shift);
         }
         return result;
+    }
+
+    /*
+    private static void enumerateIntegerPairsOfAspectRatio(double ratio) {
+        enumerateIntegerPairsOfAspectRatio(ratio, 50);
+    }
+
+    private static void enumerateIntegerPairsOfAspectRatio(double ratio, int max) {
+        int min = 1;
+
+    }
+    */
+    private static void enumerateIntegerPairsOfAspectRatio(int left, int right) { // left x right
+        enumerateIntegerPairsOfAspectRatio(left, right, 100);
+    }
+
+    private static void enumerateIntegerPairsOfAspectRatio(int left, int right, int max) {
+        int l = left;
+        int r = right;
+        while (l * r <= max) {
+            String pair = l + "x" + r;
+            System.out.println(pair);
+            l += left;
+            r += right;
+        }
     }
 }

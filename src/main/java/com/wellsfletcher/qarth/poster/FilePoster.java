@@ -45,7 +45,7 @@ public class FilePoster extends GridPoster {
 
     public FilePoster(String hostURL, String contentDirectory, String name, String inputFilePath, int columns) {
         this(hostURL, contentDirectory, name, inputFilePath,0, columns);
-        this.count = FileSystem.countLines(input);
+        setCountToLineCount();
     }
 
     public FilePoster(String hostURL, String contentDirectory, String name, String inputFilePath, int rows, int columns) {
@@ -54,15 +54,28 @@ public class FilePoster extends GridPoster {
         // this.count = FileSystem.countLines(input);
     }
 
+    protected void setCountToLineCount() {
+        this.count = FileSystem.countLines(input);
+    }
+
     public void create(int columns) {
         this.columns = columns;
         create();
     }
 
     protected String getFileContent(int index) {
+        /*
         String path = input;
         String[] texts = FileSystem.getLinesAsArray(path);
 
         return texts[(index) % texts.length];
+         */
+        List<String> lines = getLines();
+        return lines.get(index % lines.size());
+    }
+
+    protected List<String> getLines() {
+        String path = input;
+        return FileSystem.getLinesAsList(path);
     }
 }

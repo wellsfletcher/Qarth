@@ -5,8 +5,8 @@ import com.wellsfletcher.qarth.gen.Generator;
 import net.glxn.qrgen.core.image.ImageType;
 import net.glxn.qrgen.javase.QRCode;
 
-import components.xmltree.XMLTree;
-import components.xmltree.XMLTree1;
+// import components.xmltree.XMLTree;
+// import components.xmltree.XMLTree1;
 
 import java.io.*;
 import java.util.Scanner;
